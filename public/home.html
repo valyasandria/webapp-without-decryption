@@ -1,0 +1,42 @@
+<!-- HOME PAGE  -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Suhu Monitor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <ul>
+            <li class="logout"><a href="#" id="logoutButton">Log Out</a></li>
+        </ul>
+    </nav>
+    
+    
+    <div class="container">
+        <header class="header">
+            <h1>Monitor Suhu dan Mini Fan</h1>
+        </header>
+
+        <div class="suhu-display">
+            <h2>Suhu:</h2>
+            <p id="suhu-value"> --°C</p>
+        </div>
+
+        <div class="suhu-display">
+            <h2>Kondisi Kipas:</h2>
+            <p id="kipas-status"> ON/OFF</p>
+        </div>
+        <footer class="footer">
+            <p>&copy; 2024 ESP32 Temperature and Mini Fan Monitoring System. Valya Sandria Akiela.</p>
+        </footer>
+    </div>
+
+    <!-- Skrip untuk mengambil data suhu (simulasi) -->
+    <script src="script.js"></script>
+</body>
+</html>
