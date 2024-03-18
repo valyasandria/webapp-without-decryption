@@ -1,5 +1,6 @@
 // backend 
 
+
 // custom allert in login page
 document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('loginButton');
@@ -55,7 +56,7 @@ loginButton.addEventListener('click', function(event) {
     });
 });
 
-//HOME
+//HOME: retrieve original data from db
 document.addEventListener('DOMContentLoaded', function() {
     const suhuElement = document.getElementById('suhu-value');
     const kipasElement = document.getElementById('kipas-status');
@@ -64,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/getData')
             .then(response => response.json())
             .then(data=>{
-                const suhu = data.decryptedData
+                const suhu = data.Data
                 suhuElement.textContent = `${parseFloat(suhu).toFixed(2)}°C`;
                 // Mengubah kondisi kipas berdasarkan suhu
                 if (suhu >= 30) {
@@ -74,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
     }
-
     setInterval(updateSuhuDanKipas, 60000); // Perbarui suhu dan status kipas setiap 60 detik
 });
 

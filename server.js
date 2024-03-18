@@ -135,8 +135,10 @@ function decrypt(encryptedData) {
   }
 }
 
-// ENDPOINT RETRIEVE LATEST DATA FROM DB
+// ENDPOINT RETRIEVE LATEST DATA FROM DB 
+
 app.get('/getData', async (req, res) => {
+  let start = performance.now();
   try {
     const result = await pool.query('SELECT temperature FROM temperature_plain ORDER BY id DESC LIMIT 1');
     if (result.rows.length > 0) {
@@ -148,6 +150,11 @@ app.get('/getData', async (req, res) => {
       // Mengirimkan respons jika tidak ada data yang ditemukan
       res.status(404).send('No temperature data found');
     }
+
+    // Waktu akhir setelah data berhasil ditampilkan
+    let end = performance.now();
+    let time = end - start; // Durasi eksekusi dalam 
+    console.log(`running time: ${time} milisekon`);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Server error');
@@ -187,5 +194,5 @@ app.post('/decryptData', (req, res) => {
 });
 
 // KONFIGURASI PORT
-const PORT = 5000;
+const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
