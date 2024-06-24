@@ -56,16 +56,31 @@ app.get('/', (req, res) => {
 });
 
 // ENDPOINT LOGIN
-app.post('/login', function(req, res) {
-  // Extract username and password from req.body
+app.post('/login', async function(req, res) {
+  // Ekstrak username dan password dari req.body
   const { username, password } = req.body;
   
-  // validasi kredensial
-  if (username === process.env.USERNAME && password === process.env.PASSWORD) {
-      req.session.user = { username: username };
-      res.json({ success: true });
-  } else {
+  try {
+    // Query untuk mencari user dengan username yang diberikan
+    const queryResult = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+
+    if (queryResult.rows.length > 0) {
+      const user = queryResult.rows[0];
+
+      // Periksa jika password yang diberikan sesuai dengan yang ada di database
+      if (password === user.password) {
+        req.session.user = { username: user.username };
+        res.json({ success: true });
+      } else {
+        res.json({ success: false, message: 'Incorrect username or password' });
+      }
+    } else {
+      //username not found
       res.json({ success: false, message: 'Incorrect username or password' });
+    }
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 
@@ -142,7 +157,7 @@ app.get('/getData', async (req, res) => {
   try {
     const result = await pool.query('SELECT temperature FROM temperature_plain ORDER BY id DESC LIMIT 1');
     if (result.rows.length > 0) {
-      // Mendekripsi data temperature
+      
       const plainData = result.rows[0].temperature;
       console.log('fetched: ', plainData)
       res.json({ Data: plainData });
